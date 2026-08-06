@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CareerIQ v3 — AI Career Platform with Gemini chat, FAANG resume scoring, real-time jobs, and skill analysis for BTech CSE students.">
+  <title>CareerIQ v3 — AI Career Platform</title>
+  <link rel="stylesheet" href="index.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+  <!-- Ambient Background -->
+  <div class="bg-animation" aria-hidden="true"></div>
+  <div class="grid-bg" aria-hidden="true"></div>
+  <div class="particles" aria-hidden="true" id="particles-container"></div>
+
+  <div class="app-shell">
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <span class="brand-icon">⚡</span>
+        <span class="brand-name">CareerIQ</span>
+        <span class="brand-version">v3</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="#/" class="nav-item active" data-page="home" id="nav-home">
+          <span class="nav-icon">🏠</span>
+          <span class="nav-label">Dashboard</span>
+        </a>
+        <a href="#/resume" class="nav-item" data-page="resume" id="nav-resume">
+          <span class="nav-icon">📄</span>
+          <span class="nav-label">Resume Analysis</span>
+        </a>
+        <a href="#/resume-builder" class="nav-item" data-page="resume-builder" id="nav-resume-builder">
+          <span class="nav-icon">✨</span>
+          <span class="nav-label">Resume Builder</span>
+          <span class="nav-badge">FAANG</span>
+        </a>
+        <a href="#/skills" class="nav-item" data-page="skills" id="nav-skills">
+          <span class="nav-icon">📊</span>
+          <span class="nav-label">Skill Gap</span>
+        </a>
+        <a href="#/roles" class="nav-item" data-page="roles" id="nav-roles">
+          <span class="nav-icon">🎯</span>
+          <span class="nav-label">Job Roles</span>
+        </a>
+        <a href="#/jobs" class="nav-item" data-page="jobs" id="nav-jobs">
+          <span class="nav-icon">💼</span>
+          <span class="nav-label">Live Jobs</span>
+        </a>
+        <a href="#/opportunities" class="nav-item" data-page="opportunities" id="nav-opportunities">
+          <span class="nav-icon">🇮🇳</span>
+          <span class="nav-label">Opportunities</span>
+        </a>
+        <a href="#/detector" class="nav-item" data-page="detector" id="nav-detector">
+          <span class="nav-icon">🛡️</span>
+          <span class="nav-label">Fake Job Detector</span>
+        </a>
+        <a href="#/chat" class="nav-item" data-page="chat" id="nav-chat">
+          <span class="nav-icon">🤖</span>
+          <span class="nav-label">AI Career Chat</span>
+          <span class="nav-badge gemini">Gemini</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="api-status" id="api-status">
+          <span class="status-dot offline"></span>
+          <span class="status-text">Connecting...</span>
+        </div>
+        <div class="sidebar-storage" id="storage-status">
+          <span class="storage-icon">☁️</span>
+          <span class="storage-text" id="storage-text">Connecting to Supabase...</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Mobile Top Bar -->
+    <header class="mobile-topbar" id="mobile-topbar">
+      <button class="menu-toggle" id="menu-toggle">☰</button>
+      <div class="mobile-brand">
+        <span>⚡</span> CareerIQ
+      </div>
+      <div class="mobile-status" id="mobile-api-status">
+        <span class="status-dot offline"></span>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content" id="main-content">
+
+      <!-- ==================== PAGE: HOME DASHBOARD ==================== -->
+      <div class="page active" id="page-home" data-page="home">
+        <div class="page-header">
+          <h1 class="page-title">Dashboard</h1>
+          <p class="page-subtitle">Your AI-powered career intelligence hub</p>
+        </div>
+
+        <!-- Upload Zone (always visible on home) -->
+        <div class="dash-upload-zone" id="dash-upload-zone">
+          <div class="upload-card glass-card">
+            <div class="upload-area" id="upload-area">
+              <div class="upload-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 16V4m0 0l-4 4m4-4l4 4M4 20h16" />
+                </svg>
+              </div>
+              <div class="upload-text">
+                <h3>Drop your resume here</h3>
+                <p>or <span class="browse-link">browse files</span> — PDF or TXT accepted</p>
+              </div>
+              <input type="file" id="file-input" accept=".pdf,.txt" hidden>
+              <div class="file-info" id="file-info">
+                <div class="file-icon">📄</div>
+                <div class="file-details">
+                  <div class="file-name" id="file-name"></div>
+                  <div class="file-size" id="file-size"></div>
+                </div>
+                <button class="remove-file" id="remove-file" title="Remove file">✕</button>
+              </div>
+            </div>
+            <button class="analyze-btn" id="analyze-btn">
+              <span class="btn-content">🚀 Analyze Resume & Find Jobs</span>
+              <span class="btn-glow"></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loading-overlay">
+          <div class="loading-spinner"></div>
+          <div class="loading-text">Analyzing your resume...</div>
+          <div class="loading-subtext">Extracting skills · Matching roles · Fetching live jobs</div>
+          <div class="loading-progress">
+            <div class="loading-progress-bar" id="loading-bar"></div>
+          </div>
+        </div>
+
+        <!-- Dashboard Grid (shown after analysis) -->
+        <div class="dash-grid" id="dash-grid" style="display:none;">
+
+          <!-- Resume Fitness Gauge -->
+          <div class="dash-card dash-fitness glass-card" id="dash-fitness">
+            <div class="fitness-gauge">
+              <svg viewBox="0 0 200 200" class="gauge-svg">
+                <circle cx="100" cy="100" r="85" class="gauge-bg" />
+                <circle cx="100" cy="100" r="85" class="gauge-fill" id="gauge-fill" />
+              </svg>
+              <div class="gauge-center">
+                <div class="gauge-score" id="gauge-score">0</div>
+                <div class="gauge-label">Resume Fitness</div>
+              </div>
+            </div>
+            <div class="fitness-verdict" id="fitness-verdict">Upload resume to get your score</div>
+          </div>
+
+          <!-- Quick Stats -->
+          <div class="dash-card dash-stats glass-card">
+            <h3 class="dash-card-title">Quick Stats</h3>
+            <div class="stats-grid">
+              <div class="stat-box">
+                <div class="stat-value" id="dash-skills-count">0</div>
+                <div class="stat-label">Skills Found</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-value" id="dash-best-role">—</div>
+                <div class="stat-label">Best Match</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-value" id="dash-match-pct">0%</div>
+                <div class="stat-label">Match Score</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-value" id="dash-live-jobs">0</div>
+                <div class="stat-label">Live Jobs</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI Quick Tip -->
+          <div class="dash-card dash-ai-tip glass-card">
+            <div class="ai-tip-header">
+              <span class="ai-tip-icon">🤖</span>
+              <span class="ai-tip-title">AI Career Tip</span>
+              <span class="ai-tip-badge">Gemini</span>
+            </div>
+            <p class="ai-tip-text" id="ai-tip-text">Analyzing your profile for personalized advice...</p>
+          </div>
+
+          <!-- Trending Skills -->
+          <div class="dash-card dash-trending glass-card">
+            <h3 class="dash-card-title">🔥 Trending Skills 2025-26</h3>
+            <div class="trending-chips" id="dash-trending-chips"></div>
+          </div>
+
+          <!-- Recent Activity -->
+          <div class="dash-card dash-activity glass-card">
+            <h3 class="dash-card-title">📋 Recent Activity</h3>
+            <div class="activity-list" id="activity-list">
+              <div class="activity-empty">No activity yet. Upload a resume to get started!</div>
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+
+      <!-- ==================== PAGE: RESUME ANALYSIS ==================== -->
+      <div class="page" id="page-resume" data-page="resume">
+        <div class="page-header">
+          <h1 class="page-title">📄 Resume Analysis</h1>
+          <p class="page-subtitle">Skills extraction & categorization from your resume</p>
+        </div>
+        <div class="page-body">
+          <div class="needs-resume" id="resume-needs-upload">
+            <div class="empty-state">
+              <div class="empty-icon">📄</div>
+              <h3>No Resume Analyzed Yet</h3>
+              <p>Go to <a href="#/">Dashboard</a> and upload your resume first.</p>
+            </div>
+          </div>
+          <div class="resume-results" id="resume-results" style="display:none;">
+            <div class="glass-card">
+              <div class="skills-grid" id="skills-grid"></div>
+              <div class="chart-container">
+                <canvas id="skills-chart"></canvas>
+              </div>
+              <div class="sw-grid">
+                <div class="sw-card strengths">
+                  <div class="sw-card-header"><span class="icon">💪</span> Strengths</div>
+                  <ul class="sw-list" id="strengths-list"></ul>
+                </div>
+                <div class="sw-card weaknesses">
+                  <div class="sw-card-header"><span class="icon">🔍</span> Areas to Improve</div>
+                  <ul class="sw-list" id="weaknesses-list"></ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== PAGE: RESUME BUILDER (FAANG) ==================== -->
+      <div class="page" id="page-resume-builder" data-page="resume-builder">
+        <div class="page-header">
+          <h1 class="page-title">✨ FAANG Resume Builder</h1>
+          <p class="page-subtitle">Score your resume against FAANG standards & auto-format it</p>
+        </div>
+        <div class="page-body">
+          <div class="needs-resume" id="builder-needs-upload">
+            <div class="empty-state">
+              <div class="empty-icon">✨</div>
+              <h3>No Resume Analyzed Yet</h3>
+              <p>Go to <a href="#/">Dashboard</a> and upload your resume first.</p>
+            </div>
+          </div>
+          <div class="builder-results" id="builder-results" style="display:none;">
+            <!-- FAANG Score Card -->
+            <div class="faang-score-section glass-card">
+              <div class="faang-gauge">
+                <svg viewBox="0 0 200 200" class="gauge-svg faang-gauge-svg">
+                  <circle cx="100" cy="100" r="85" class="gauge-bg" />
+                  <circle cx="100" cy="100" r="85" class="gauge-fill faang-gauge-fill" id="faang-gauge-fill" />
+                </svg>
+                <div class="gauge-center">
+                  <div class="gauge-score faang-score-num" id="faang-score">0</div>
+                  <div class="gauge-label">FAANG Score</div>
+                </div>
+              </div>
+              <div class="faang-verdict" id="faang-verdict"></div>
+              <div class="faang-criteria-grid" id="faang-criteria-grid"></div>
+            </div>
+            <!-- Generated Resume Preview -->
+            <div class="generated-resume-section glass-card" id="generated-resume-section" style="display:none;">
+              <div class="gen-resume-header">
+                <h3>📝 Reformatted Resume (FAANG Standard)</h3>
+                <div class="gen-resume-actions">
+                  <button class="gen-btn" id="download-resume-pdf">📥 Download PDF</button>
+                  <button class="gen-btn secondary" id="copy-resume-text">📋 Copy Text</button>
+                </div>
+              </div>
+              <div class="gen-resume-preview" id="gen-resume-preview"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== PAGE: SKILL GAP ==================== -->
+      <div class="page" id="page-skills" data-page="skills">
+        <div class="page-header">
+          <h1 class="page-title">📊 Skill Gap & Improvement Plan</h1>
+          <p class="page-subtitle">What you're missing & how to learn it</p>
+        </div>
+        <div class="page-body">
+          <div class="needs-resume" id="skills-needs-upload">
+            <div class="empty-state">
+              <div class="empty-icon">📊</div>
+              <h3>No Resume Analyzed Yet</h3>
+              <p>Go to <a href="#/">Dashboard</a> and upload your resume first.</p>
+            </div>
+          </div>
+          <div class="skills-results" id="skills-results" style="display:none;">
+            <div class="glass-card">
+              <div class="gap-grid" id="gap-grid"></div>
+              <div class="learning-resources">
+                <div class="learning-header">📚 Recommended Learning Resources</div>
+                <div class="resource-grid" id="resource-grid"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== PAGE: JOB ROLES ==================== -->
+      <div class="page" id="page-roles" data-page="roles">
+        <div class="page-header">
+          <h1 class="page-title">🎯 Matching Job Roles</h1>
+          <p class="page-subtitle">Click a role for details & job links</p>
+        </div>
+        <div class="page-body">
+          <div class="needs-resume" id="roles-needs-upload">
+            <div class="empty-state">
+              <div class="empty-icon">🎯</div>
+              <h3>No Resume Analyzed Yet</h3>
+              <p>Go to <a href="#/">Dashboard</a> and upload your resume first.</p>
+            </div>
+          </div>
+          <div class="roles-results" id="roles-results" style="display:none;">
+            <div class="roles-grid" id="roles-grid"></div>
+          </div>
+        </div>
+        <!-- Role Detail Modal -->
+        <div class="modal-overlay" id="role-modal">
+          <div class="modal-container">
+            <button class="modal-close" id="modal-close">✕</button>
+            <div class="modal-body" id="modal-body"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== PAGE: LIVE JOBS ==================== -->
+      <div class="page" id="page-jobs" data-page="jobs">
+        <div class="page-header">
+          <h1 class="page-title">💼 Real-Time Job Listings</h1>
+          <p class="page-subtitle" id="jobs-api-status">
+            <span class="live-indicator"></span> Live from Remotive API · 🌐 Remote · Entry-Level · 0-2 Yrs
+          </p>
+        </div>
+        <div class="page-body">
+          <div class="needs-resume" id="jobs-needs-upload">
+            <div class="empty-state">
+              <div class="empty-icon">💼</div>
+              <h3>No Resume Analyzed Yet</h3>
+              <p>Go to <a href="#/">Dashboard</a> and upload your resume first.</p>
+            </div>
+          </div>
+          <div class="jobs-results" id="jobs-results" style="display:none;">
+            <div class="live-jobs-grid" id="live-jobs-grid"></div>
+            <div class="listings-grid" id="listings-grid"></div>
+            <div class="portal-links" id="portal-links"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== PAGE: OPPORTUNITIES ==================== -->
+      <div class="page" id="page-opportunities" data-page="opportunities">
+        <div class="page-header">
+          <h1 class="page-title">🇮🇳 Internships, Hackathons & Opportunities</h1>
+          <p class="page-subtitle" id="opp-api-status">
+            <span class="live-indicator"></span> India Only · 3rd/4th Year BTech CSE · Currently Open
+          </p>
+        </div>
+        <div class="page-body">
+          <div class="opp-tabs">
+            <button class="opp-tab active" data-tab="internships">🎓 Internships</button>
+            <button class="opp-tab" data-tab="hackathons">🏆 Hackathons & Competitions</button>
+            <button class="opp-tab" data-tab="fulltime">💼 Full-Time / Entry Level</button>
+          </div>
+          <div class="opp-tab-content active" id="tab-internships">
+            <div class="opp-grid" id="internships-grid"></div>
+          </div>
+          <div class="opp-tab-content" id="tab-hackathons">
+            <div class="opp-grid" id="hackathons-grid"></div>
+          </div>
+          <div class="opp-tab-content" id="tab-fulltime">
+            <div class="opp-grid" id="fulltime-grid"></div>
+          </div>
+          <div class="opp-portals">
+            <div class="opp-portals-title">🔗 Browse More Opportunities</div>
+            <div class="opp-portals-grid" id="opp-portals-grid"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== PAGE: FAKE JOB DETECTOR ==================== -->
+      <div class="page" id="page-detector" data-page="detector">
+        <div class="page-header">
+          <h1 class="page-title">🛡️ Fake Job Detector</h1>
+          <p class="page-subtitle">Paste a job URL or description to check for red flags</p>
+        </div>
+        <div class="page-body">
+          <div class="glass-card fake-job-card">
+            <div class="fjd-input-area">
+              <div class="fjd-tabs">
+                <button class="fjd-tab active" data-fjd-tab="url">🔗 Check by URL</button>
+                <button class="fjd-tab" data-fjd-tab="text">📝 Check by Description</button>
+              </div>
+              <div class="fjd-tab-content active" id="fjd-tab-url">
+                <input type="url" class="fjd-input" id="fjd-url-input" placeholder="Paste job listing URL (e.g. linkedin.com/jobs/..., naukri.com/job/...)" />
+              </div>
+              <div class="fjd-tab-content" id="fjd-tab-text">
+                <textarea class="fjd-textarea" id="fjd-text-input" rows="6" placeholder="Paste the full job description text here..."></textarea>
+              </div>
+              <button class="fjd-analyze-btn" id="fjd-analyze-btn">
+                <span class="fjd-btn-icon">🛡️</span>
+                <span class="fjd-btn-text">Analyze for Fraud</span>
+              </button>
+            </div>
+            <div class="fjd-results" id="fjd-results"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== PAGE: AI CHAT ==================== -->
+      <div class="page" id="page-chat" data-page="chat">
+        <div class="page-header">
+          <h1 class="page-title">🤖 AI Career Chat</h1>
+          <p class="page-subtitle">Powered by Google Gemini — ask anything about your career</p>
+        </div>
+        <div class="page-body chat-page-body">
+          <div class="chat-container glass-card">
+            <div class="chat-messages" id="chat-messages">
+              <div class="chat-welcome">
+                <div class="chat-welcome-icon">🤖</div>
+                <h3>Hi! I'm your AI Career Advisor</h3>
+                <p>I'm powered by Google Gemini and I know your resume. Ask me anything about career paths, interview prep, skill development, or job search strategies.</p>
+                <div class="chat-suggestions" id="chat-suggestions">
+                  <button class="chat-suggestion" data-prompt="What should I learn next based on my skills?">💡 What should I learn next?</button>
+                  <button class="chat-suggestion" data-prompt="Review my resume and give specific feedback">📝 Review my resume</button>
+                  <button class="chat-suggestion" data-prompt="Prepare me for a technical interview for my best matching role">🎯 Prep me for interview</button>
+                  <button class="chat-suggestion" data-prompt="What are the salary expectations for my skill level in India?">💰 Salary expectations</button>
+                  <button class="chat-suggestion" data-prompt="Give me a 3-month learning roadmap to become more employable">🗺️ Learning roadmap</button>
+                  <button class="chat-suggestion" data-prompt="Compare my skills with what FAANG companies look for">🏢 FAANG readiness</button>
+                </div>
+              </div>
+            </div>
+            <div class="chat-input-area">
+              <textarea class="chat-input" id="chat-input" rows="1" placeholder="Ask Gemini about your career..."></textarea>
+              <button class="chat-send" id="chat-send">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                  <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="app.js" charset="UTF-8"></script>
+</body>
+
+</html>

@@ -1,0 +1,45 @@
+SRISHTI SHARMA
+BTech Computer Science Engineering | 2024 Graduate
+Email: srishti@example.com | Phone: +91-9876543210
+
+EDUCATION
+B.Tech in Computer Science and Engineering
+XYZ University, 2020 - 2024 | CGPA: 8.5/10
+
+SKILLS
+Programming: Python, Java, JavaScript, C++, SQL, HTML, CSS
+Frameworks: React, Node.js, Express, Django, Flask, Bootstrap
+Databases: MySQL, MongoDB, PostgreSQL, Redis
+Tools: Git, GitHub, Docker, VS Code, Postman, Linux
+Cloud: AWS, Firebase
+Other: REST API, Agile, Scrum
+
+PROJECTS
+1. E-Commerce Platform (React, Node.js, MongoDB)
+   - Built full-stack e-commerce app with payment integration
+   - Implemented JWT authentication and role-based access
+
+2. ML-Based Sentiment Analyzer (Python, Flask, NLP)
+   - Developed sentiment analysis tool using NLP techniques
+   - Used scikit-learn and pandas for data processing
+
+3. Task Management App (React, Firebase)
+   - Real-time task tracking with collaboration features
+
+EXPERIENCE
+Software Development Intern | ABC Tech, Summer 2023
+- Developed REST APIs using Django and PostgreSQL
+- Worked in Agile team, participated in daily standups
+- Improved API response time by 40%
+
+CERTIFICATIONS
+- AWS Cloud Practitioner
+- Google Data Analytics Certificate
+
+ACHIEVEMENTS
+- Won Smart India Hackathon 2023
+- 500+ problems solved on LeetCode
+- Open source contributor on GitHub
+
+SOFT SKILLS
+Leadership, Teamwork, Communication, Problem Solving, Time Management
