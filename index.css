@@ -277,23 +277,23 @@ input, textarea { font-family: inherit; }
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  /* Reduced brightness on background images ONLY */
-  filter: brightness(0.2) contrast(1.1);
-  opacity: 0.35;
+  /* Moderate brightness reduction so background images stay visible */
+  filter: brightness(0.65) contrast(1.05);
+  opacity: 0.65;
   pointer-events: none;
   transition: all 0.5s ease;
 }
 
-/* Page Specific Backgrounds - Dimmed background images only */
-#page-home::before { background-image: linear-gradient(rgba(10, 14, 26, 0.85), rgba(10, 14, 26, 0.92)), url('hero-bg.png'); }
-#page-resume::before { background-image: linear-gradient(rgba(10, 14, 26, 0.85), rgba(10, 14, 26, 0.92)), url('image_resume_analysis.jpg'); }
-#page-resume-builder::before { background-image: linear-gradient(rgba(10, 14, 26, 0.85), rgba(10, 14, 26, 0.92)), url('image_13.jpg'); }
-#page-skills::before { background-image: linear-gradient(rgba(10, 14, 26, 0.85), rgba(10, 14, 26, 0.92)), url('image_skill_gap.jpg'); }
-#page-roles::before { background-image: linear-gradient(rgba(10, 14, 26, 0.85), rgba(10, 14, 26, 0.92)), url('image_131.jpg'); }
-#page-jobs::before { background-image: linear-gradient(rgba(10, 14, 26, 0.85), rgba(10, 14, 26, 0.92)), url('hero-bg.png'); }
-#page-opportunities::before { background-image: linear-gradient(rgba(10, 14, 26, 0.85), rgba(10, 14, 26, 0.92)), url('image12.jpg'); }
-#page-detector::before { background-image: linear-gradient(rgba(10, 14, 26, 0.85), rgba(10, 14, 26, 0.92)), url('image_15_scam.jpg'); }
-#page-chat::before { background-image: linear-gradient(rgba(10, 14, 26, 0.85), rgba(10, 14, 26, 0.92)), url('image_14.jpg'); }
+/* Page Specific Backgrounds - Perfectly balanced image visibility & text contrast */
+#page-home::before { background-image: linear-gradient(rgba(10, 14, 26, 0.45), rgba(10, 14, 26, 0.65)), url('hero-bg.png'); }
+#page-resume::before { background-image: linear-gradient(rgba(10, 14, 26, 0.45), rgba(10, 14, 26, 0.65)), url('image_resume_analysis.jpg'); }
+#page-resume-builder::before { background-image: linear-gradient(rgba(10, 14, 26, 0.45), rgba(10, 14, 26, 0.65)), url('image_13.jpg'); }
+#page-skills::before { background-image: linear-gradient(rgba(10, 14, 26, 0.45), rgba(10, 14, 26, 0.65)), url('image_skill_gap.jpg'); }
+#page-roles::before { background-image: linear-gradient(rgba(10, 14, 26, 0.45), rgba(10, 14, 26, 0.65)), url('image_131.jpg'); }
+#page-jobs::before { background-image: linear-gradient(rgba(10, 14, 26, 0.45), rgba(10, 14, 26, 0.65)), url('hero-bg.png'); }
+#page-opportunities::before { background-image: linear-gradient(rgba(10, 14, 26, 0.45), rgba(10, 14, 26, 0.65)), url('image12.jpg'); }
+#page-detector::before { background-image: linear-gradient(rgba(10, 14, 26, 0.45), rgba(10, 14, 26, 0.65)), url('image_15_scam.jpg'); }
+#page-chat::before { background-image: linear-gradient(rgba(10, 14, 26, 0.45), rgba(10, 14, 26, 0.65)), url('image_14.jpg'); }
 
 .page.active { display: block; }
 
