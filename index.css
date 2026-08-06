@@ -7,9 +7,9 @@
   /* Colors */
   --bg-primary: #0a0e1a;
   --bg-secondary: #111827;
-  --bg-card: rgba(17, 24, 39, 0.7);
-  --bg-glass: rgba(255, 255, 255, 0.04);
-  --bg-glass-hover: rgba(255, 255, 255, 0.08);
+  --bg-card: rgba(15, 23, 42, 0.9);
+  --bg-glass: rgba(15, 23, 42, 0.85);
+  --bg-glass-hover: rgba(30, 41, 59, 0.92);
 
   --text-primary: #f1f5f9;
   --text-secondary: #94a3b8;
@@ -277,25 +277,25 @@ input, textarea { font-family: inherit; }
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  /* Darker overlay for maximum text visibility and professional feel */
-  background-image: linear-gradient(rgba(10, 14, 26, 0.75), rgba(10, 14, 26, 0.85));
-  background-blend-mode: overlay;
-  opacity: 1;
+  /* Deep dark overlay + heavy dimming for maximum text contrast and legibility */
+  background-image: linear-gradient(rgba(10, 14, 26, 0.94), rgba(10, 14, 26, 0.97));
+  background-blend-mode: multiply;
+  filter: brightness(0.25) contrast(1.1);
+  opacity: 0.3;
   pointer-events: none;
   transition: all 0.5s ease;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* Subtle shadow for text pop */
 }
 
-/* Page Specific Backgrounds - Combined with the dark overlay */
-#page-home::before { background-image: linear-gradient(rgba(10, 14, 26, 0.75), rgba(10, 14, 26, 0.9)), url('hero-bg.png'); }
-#page-resume::before { background-image: linear-gradient(rgba(10, 14, 26, 0.75), rgba(10, 14, 26, 0.9)), url('image_resume_analysis.jpg'); }
-#page-resume-builder::before { background-image: linear-gradient(rgba(10, 14, 26, 0.75), rgba(10, 14, 26, 0.9)), url('image_13.jpg'); }
-#page-skills::before { background-image: linear-gradient(rgba(10, 14, 26, 0.75), rgba(10, 14, 26, 0.9)), url('image_skill_gap.jpg'); }
-#page-roles::before { background-image: linear-gradient(rgba(10, 14, 26, 0.75), rgba(10, 14, 26, 0.9)), url('image_131.jpg'); }
-#page-jobs::before { background-image: linear-gradient(rgba(10, 14, 26, 0.75), rgba(10, 14, 26, 0.9)), url('hero-bg.png'); }
-#page-opportunities::before { background-image: linear-gradient(rgba(10, 14, 26, 0.75), rgba(10, 14, 26, 0.9)), url('image12.jpg'); }
-#page-detector::before { background-image: linear-gradient(rgba(10, 14, 26, 0.75), rgba(10, 14, 26, 0.9)), url('image_15_scam.jpg'); }
-#page-chat::before { background-image: linear-gradient(rgba(10, 14, 26, 0.75), rgba(10, 14, 26, 0.9)), url('image_14.jpg'); }
+/* Page Specific Backgrounds - Heavily dimmed so content is crisp and readable */
+#page-home::before { background-image: linear-gradient(rgba(10, 14, 26, 0.92), rgba(10, 14, 26, 0.96)), url('hero-bg.png'); }
+#page-resume::before { background-image: linear-gradient(rgba(10, 14, 26, 0.92), rgba(10, 14, 26, 0.96)), url('image_resume_analysis.jpg'); }
+#page-resume-builder::before { background-image: linear-gradient(rgba(10, 14, 26, 0.92), rgba(10, 14, 26, 0.96)), url('image_13.jpg'); }
+#page-skills::before { background-image: linear-gradient(rgba(10, 14, 26, 0.92), rgba(10, 14, 26, 0.96)), url('image_skill_gap.jpg'); }
+#page-roles::before { background-image: linear-gradient(rgba(10, 14, 26, 0.92), rgba(10, 14, 26, 0.96)), url('image_131.jpg'); }
+#page-jobs::before { background-image: linear-gradient(rgba(10, 14, 26, 0.92), rgba(10, 14, 26, 0.96)), url('hero-bg.png'); }
+#page-opportunities::before { background-image: linear-gradient(rgba(10, 14, 26, 0.92), rgba(10, 14, 26, 0.96)), url('image12.jpg'); }
+#page-detector::before { background-image: linear-gradient(rgba(10, 14, 26, 0.92), rgba(10, 14, 26, 0.96)), url('image_15_scam.jpg'); }
+#page-chat::before { background-image: linear-gradient(rgba(10, 14, 26, 0.92), rgba(10, 14, 26, 0.96)), url('image_14.jpg'); }
 
 .page.active { display: block; }
 
@@ -321,10 +321,12 @@ input, textarea { font-family: inherit; }
 /* --- Glass Card --- */
 .glass-card {
   background: var(--bg-glass);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border-color);
   border-radius: var(--card-radius);
   padding: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 /* --- Empty State --- */
