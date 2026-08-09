@@ -3,19 +3,38 @@
 // ============================================
 
 // --- Groq API Configuration (Primary — 30 RPM, 14400/day FREE) ---
-const GROQ_API_KEY = (typeof window !== 'undefined' && window.ENV?.GROQ_API_KEY) || localStorage.getItem('GROQ_API_KEY') || '';
+let GROQ_API_KEY = (typeof window !== 'undefined' && window.ENV?.GROQ_API_KEY) || localStorage.getItem('GROQ_API_KEY') || '';
+const getGroqApiKey = () => {
+  if (!GROQ_API_KEY) {
+    GROQ_API_KEY = prompt("Please enter your Groq API Key to use the AI features (or cancel to fallback to Gemini):") || '';
+    if (GROQ_API_KEY) localStorage.setItem('GROQ_API_KEY', GROQ_API_KEY);
+  }
+  return GROQ_API_KEY;
+};
 const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
 const GROQ_MODEL = 'llama-3.3-70b-versatile';
 
 // --- Gemini API Configuration (Fallback) ---
-const GEMINI_API_KEY = (typeof window !== 'undefined' && window.ENV?.GEMINI_API_KEY) || localStorage.getItem('GEMINI_API_KEY') || '';
-const getGeminiApiUrl = () => `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
-const GEMINI_API_URL = getGeminiApiUrl();
+let GEMINI_API_KEY = (typeof window !== 'undefined' && window.ENV?.GEMINI_API_KEY) || localStorage.getItem('GEMINI_API_KEY') || '';
+const getGeminiApiUrl = () => {
+  if (!GEMINI_API_KEY) {
+    GEMINI_API_KEY = prompt("Please enter your Gemini API Key to use the AI chat:") || '';
+    if (GEMINI_API_KEY) localStorage.setItem('GEMINI_API_KEY', GEMINI_API_KEY);
+  }
+  return `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
+};
 // Free fallback AI (Hugging Face — no key needed, completely free)
 const HF_API_URL = 'https://api-inference.huggingface.co/models/HuggingFaceH4/zephyr-7b-beta';
 
 // --- JSearch API (Real-Time India Jobs from LinkedIn/Indeed/Glassdoor) ---
-const JSEARCH_API_KEY = (typeof window !== 'undefined' && window.ENV?.JSEARCH_API_KEY) || localStorage.getItem('JSEARCH_API_KEY') || '';
+let JSEARCH_API_KEY = (typeof window !== 'undefined' && window.ENV?.JSEARCH_API_KEY) || localStorage.getItem('JSEARCH_API_KEY') || '';
+const getJSearchApiKey = () => {
+  if (!JSEARCH_API_KEY) {
+    JSEARCH_API_KEY = prompt("Please enter your RapidAPI JSearch API Key to view live jobs:") || '';
+    if (JSEARCH_API_KEY) localStorage.setItem('JSEARCH_API_KEY', JSEARCH_API_KEY);
+  }
+  return JSEARCH_API_KEY;
+};
 const JSEARCH_API_URL = 'https://jsearch.p.rapidapi.com/search';
 
 // --- Supabase Configuration ---
@@ -334,7 +353,7 @@ class OpportunityFetcher {
       });
       const resp = await fetch(`${JSEARCH_API_URL}?${params}`, {
         method: 'GET',
-        headers: { 'x-rapidapi-host': 'jsearch.p.rapidapi.com', 'x-rapidapi-key': JSEARCH_API_KEY }
+        headers: { 'x-rapidapi-host': 'jsearch.p.rapidapi.com', 'x-rapidapi-key': getJSearchApiKey() }
       });
       if (!resp.ok) throw new Error(`JSearch ${resp.status}`);
       const data = await resp.json();
@@ -840,7 +859,7 @@ Guidelines:
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${GROQ_API_KEY}`
+          'Authorization': `Bearer ${getGroqApiKey()}`
         },
         body: JSON.stringify({
           model: GROQ_MODEL,
@@ -868,7 +887,7 @@ Guidelines:
       const contents = [
         { role: 'user', parts: [{ text: systemPrompt + '\n\nUser: ' + this.chatHistory.map(m => `${m.role}: ${m.content}`).join('\n') }] }
       ];
-      const resp = await fetch(GEMINI_API_URL, {
+      const resp = await fetch(getGeminiApiUrl(), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ contents })
