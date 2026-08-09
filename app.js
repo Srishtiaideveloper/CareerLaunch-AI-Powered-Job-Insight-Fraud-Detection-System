@@ -1069,7 +1069,7 @@ class App {
         throw error;
       }
     } catch (e) {
-      console.warn('⚠️ Supabase connection failed:', e);
+      console.warn('⚠️ Supabase connection failed (Check your Supabase Dashboard - Table might not exist or RLS is blocking access):', e);
       if (storageText) storageText.textContent = 'Fallback: localStorage';
       if (storageIcon) storageIcon.textContent = '💾';
     }
