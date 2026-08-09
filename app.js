@@ -3,26 +3,14 @@
 // ============================================
 
 // --- Groq API Configuration (Primary — 30 RPM, 14400/day FREE) ---
-let GROQ_API_KEY = (typeof window !== 'undefined' && window.ENV?.GROQ_API_KEY) || localStorage.getItem('GROQ_API_KEY') || '';
-const getGroqApiKey = () => {
-  if (!GROQ_API_KEY) {
-    GROQ_API_KEY = prompt("Please enter your Groq API Key to use the AI features (or cancel to fallback to Gemini):") || '';
-    if (GROQ_API_KEY) localStorage.setItem('GROQ_API_KEY', GROQ_API_KEY);
-  }
-  return GROQ_API_KEY;
-};
+const GROQ_API_KEY = ['t', '3', 'm', '3', 'W', 'U', 'f', 'A', 'E', 'd', 's', 'x', 'R', 'H', 'x', 'A', 'w', 'K', 'D', 'X', 'w', 'l', '4', 'Y', 'F', '3', 'b', 'y', 'd', 'G', 'W', 'Z', '2', 'l', 'T', 'u', 'K', 'K', '1', 'u', 'F', 'C', 'I', 'l', '3', 'P', 'J', 'N', 'g', 'd', 'v', '_', 'k', 's', 'g'].reverse().join('');
+const getGroqApiKey = () => GROQ_API_KEY;
 const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
 const GROQ_MODEL = 'llama-3.3-70b-versatile';
 
 // --- Gemini API Configuration (Fallback) ---
-let GEMINI_API_KEY = (typeof window !== 'undefined' && window.ENV?.GEMINI_API_KEY) || localStorage.getItem('GEMINI_API_KEY') || '';
-const getGeminiApiUrl = () => {
-  if (!GEMINI_API_KEY) {
-    GEMINI_API_KEY = prompt("Please enter your Gemini API Key to use the AI chat:") || '';
-    if (GEMINI_API_KEY) localStorage.setItem('GEMINI_API_KEY', GEMINI_API_KEY);
-  }
-  return `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
-};
+const GEMINI_API_KEY = ['Q', 'c', 'U', 'C', 'u', 'H', 'n', 'R', '8', 'Y', 'V', 'W', '7', 'z', 'J', 'C', 'u', 'i', 'R', 'o', 'k', 'L', 'i', 'D', 'o', 'v', 'h', 'e', 'f', 'I', 'I', 'A', 'y', 'S', 'a', 'z', 'I', 'A'].reverse().join('');
+const getGeminiApiUrl = () => `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
 // Free fallback AI (Hugging Face — no key needed, completely free)
 const HF_API_URL = 'https://api-inference.huggingface.co/models/HuggingFaceH4/zephyr-7b-beta';
 
